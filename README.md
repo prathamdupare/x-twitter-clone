@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a Fullstack X/Twitter clone made with Next.js, MongoDb, Typescript and Cerk for authentication.
 
 ## Getting Started
 
