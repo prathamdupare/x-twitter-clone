@@ -16,33 +16,34 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+
 import { ThreadValidation } from "@/lib/validations/thread";
+import { createThread } from "@/lib/actions/thread.action";
 
 interface Props {
-  user: {
-    id: string;
-    objectId: string;
-    username: string;
-    name: string;
-    bio: string;
-    image: string;
-  };
-  btnTitle: string;
+  userId: string; // Update the type definition
 }
-
-const PostThread = ({ userId }: { userId: string }) => {
+function PostThread({ userId }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof ThreadValidation>>({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
       thread: "",
       accountId: userId,
     },
   });
-  const onSubmit = async () => {
-    // await createThread()
+
+  const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+    await createThread({
+      text: values.thread,
+      author: userId,
+      communityId: null,
+      path: pathname,
+    });
+
+    router.push("/");
   };
 
   return (
@@ -70,9 +71,9 @@ const PostThread = ({ userId }: { userId: string }) => {
         <Button type="submit" className="bg-primary-500">
           Post Thread
         </Button>
-      </form>{" "}
+      </form>
     </Form>
   );
-};
+}
 
 export default PostThread;
